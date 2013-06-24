@@ -1,4 +1,4 @@
 ^..\Common\amd64\_instrinsics.asm
-D:\blog\RedPill\MiniHyperVisorProject\SysCall\Debug-amd64\_instrinsics.obj
+C:\Users\phlavaty\Documents\GitHub\MiniHyperVisorProject\MiniHyperVisorProject\SysCall\Debug-amd64\_instrinsics.obj
 ^src\amd64\_syscall.asm
-D:\blog\RedPill\MiniHyperVisorProject\SysCall\Debug-amd64\_syscall.obj
+C:\Users\phlavaty\Documents\GitHub\MiniHyperVisorProject\MiniHyperVisorProject\SysCall\Debug-amd64\_syscall.obj
