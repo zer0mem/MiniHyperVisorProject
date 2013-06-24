@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="StdAfx.cpp" />
+    <ClCompile Include="..\Common\base\libc.cpp">
+      <Filter>Common\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\Kernel\Mdl.cpp">
+      <Filter>Common\Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CSysCall.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="DriverEntry.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="drv_common.h" />
+    <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="..\Common\base\Common.h">
+      <Filter>Common\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\base\instrinsics.h">
+      <Filter>Common\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Kernel\IRQL.hpp">
+      <Filter>Common\Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Kernel\Mdl.h">
+      <Filter>Common\Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\CPU\msr.h">
+      <Filter>Common\CPU</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CSysCall.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Stack.hpp">
+      <Filter>src\Common</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="driver_template.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>{35b780cc-6498-4203-ad4e-3d2c0f3a7c34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\amd64">
+      <UniqueIdentifier>{ecf20641-94bd-47be-a8ab-ef1a164c5e7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\base">
+      <UniqueIdentifier>{ac20622b-033e-410f-be17-d284eba48867}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Kernel">
+      <UniqueIdentifier>{be28483d-1059-4b68-b04f-3f3ef9db77aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\CPU">
+      <UniqueIdentifier>{3edfaa86-96e3-4c63-8ab7-e107aec508e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{b30e0f15-a954-4056-9c53-e0e95db208ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Common">
+      <UniqueIdentifier>{c695ccd1-59cf-47e9-be2c-ca93750d1969}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\amd64">
+      <UniqueIdentifier>{23b99526-6d92-4545-a012-828a6772a52c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="..\Common\amd64\_instrinsics.asm">
+      <Filter>Common\amd64</Filter>
+    </MASM>
+    <MASM Include="src\amd64\_syscall.asm">
+      <Filter>src\amd64</Filter>
+    </MASM>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Common\amd64\common.inc">
+      <Filter>Common\amd64</Filter>
+    </None>
+  </ItemGroup>
+</Project>

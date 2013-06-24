@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="StdAfx.cpp" />
+    <ClCompile Include="..\Common\base\libc.cpp">
+      <Filter>Common\base</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Cronos.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="drv_common.h" />
+    <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="..\Common\base\Common.h">
+      <Filter>Common\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\base\instrinsics.h">
+      <Filter>Common\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\CPU\msr.h">
+      <Filter>Common\CPU</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Cronos.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\utils\ProcessorWalker.hpp">
+      <Filter>Common\utils</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="driver_template.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{d07e71b9-b790-4851-8383-1550fbb6ac65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{0693d1a8-ae9e-4581-87f9-eab3b8a370e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\amd64">
+      <UniqueIdentifier>{19e96ba8-3c11-4a42-8972-2c97bec3bdc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\base">
+      <UniqueIdentifier>{d363ec93-09fd-48a3-9c2f-0cb9b3774cba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\CPU">
+      <UniqueIdentifier>{9179bac6-f1bf-40bb-a5bd-0057a092ab9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\utils">
+      <UniqueIdentifier>{e6c57d4b-c39f-4124-a62d-74dd9b98b751}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="..\Common\amd64\_instrinsics.asm">
+      <Filter>Common\amd64</Filter>
+    </MASM>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Common\amd64\common.inc">
+      <Filter>Common\amd64</Filter>
+    </None>
+  </ItemGroup>
+</Project>

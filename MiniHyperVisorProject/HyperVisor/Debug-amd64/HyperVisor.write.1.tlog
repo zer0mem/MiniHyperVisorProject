@@ -1,0 +1,6 @@
+^..\Common\amd64\_instrinsics.asm
+D:\blog\RedPill\MiniHyperVisorProject\HyperVisor\Debug-amd64\_instrinsics.obj
+^src\amd64\_hv.asm
+D:\blog\RedPill\MiniHyperVisorProject\HyperVisor\Debug-amd64\_hv.obj
+^src\amd64\_vmx.asm
+D:\blog\RedPill\MiniHyperVisorProject\HyperVisor\Debug-amd64\_vmx.obj

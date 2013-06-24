@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="StdAfx.cpp" />
+    <ClCompile Include="src\HyperVisor.cpp">
+      <Filter>src\HyperVisor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VirtualizedCpu.cpp">
+      <Filter>src\CPU</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VMX.cpp">
+      <Filter>src\VMX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\base\libc.cpp">
+      <Filter>Common\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\Kernel\Mdl.cpp">
+      <Filter>Common\Kernel</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="drv_common.h" />
+    <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="Common\base\HVCommon.h">
+      <Filter>src\Common\base</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\CPU\vmcs.h">
+      <Filter>src\Common\CPU</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HyperVisor.h">
+      <Filter>src\HyperVisor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\VirtualizedCpu.h">
+      <Filter>src\CPU</Filter>
+    </ClInclude>
+    <ClInclude Include="src\VMX.h">
+      <Filter>src\VMX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\base\Common.h">
+      <Filter>Common\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\base\instrinsics.h">
+      <Filter>Common\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Kernel\IRQL.hpp">
+      <Filter>Common\Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Kernel\Mdl.h">
+      <Filter>Common\Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\CPU\msr.h">
+      <Filter>Common\CPU</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="driver_template.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{1da468d2-5f94-4b88-a15a-4d40023bb6e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\HyperVisor">
+      <UniqueIdentifier>{695b8394-971e-455b-a80b-0960dbc3e2f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\amd64">
+      <UniqueIdentifier>{12501573-d1f5-49bf-83f9-c9885c853537}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\VMX">
+      <UniqueIdentifier>{3d201d35-d648-4504-b626-9eef6b74c19c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\CPU">
+      <UniqueIdentifier>{13ca97f8-1bbf-4075-bf8a-3868eff838e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Common">
+      <UniqueIdentifier>{d66ad410-509d-4277-a0e9-98700ed09700}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Common\base">
+      <UniqueIdentifier>{5306fd54-ee4f-423e-b156-1dc9e7f04850}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Common\CPU">
+      <UniqueIdentifier>{7896e3ec-6baf-455d-a91d-6b113b4c3917}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{eb11dd59-d89b-48fb-8c93-d2e1dc1afc4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\amd64">
+      <UniqueIdentifier>{cf2bc15a-08df-41f8-a6af-5038488e1a81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\base">
+      <UniqueIdentifier>{b0d9002f-c82f-4a3c-8991-0a1071340e4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Kernel">
+      <UniqueIdentifier>{8157ad02-6718-4092-a35f-d8f60ee5237e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\CPU">
+      <UniqueIdentifier>{0a6dedeb-2c76-45aa-975c-af749a8d813a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="src\amd64\_hv.asm">
+      <Filter>src\amd64</Filter>
+    </MASM>
+    <MASM Include="src\amd64\_vmx.asm">
+      <Filter>src\amd64</Filter>
+    </MASM>
+    <MASM Include="..\Common\amd64\_instrinsics.asm">
+      <Filter>Common\amd64</Filter>
+    </MASM>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Common\amd64\common.inc">
+      <Filter>Common\amd64</Filter>
+    </None>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,10 @@
+#////////////////////////////////////////////////////////////////////
+#// Alexander A. Telyatnikov (Alter) 2002-2005. Kiev, Ukraine
+#// All rights reserved
+#////////////////////////////////////////////////////////////////////
+
+BaseDir="$(BASEDIR)"
+BaseDirNT4="$(BASEDIRNT4)"
+BaseDir2k="$(BASEDIR2K)"
+
+!INCLUDE driver_template.mak
