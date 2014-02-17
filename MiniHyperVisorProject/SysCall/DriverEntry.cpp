@@ -1,34 +1,53 @@
-#include "drv_common.h"
+#include "../drv_common.h"
+#include "../../Common/base/Common.h"
 
 #include "./src/CSysCall.h"
 
-PDRIVER_OBJECT DriverObject;
+CSysCall gSysCall;
 
-CSysCall* gSC;
+EXTERN_C 
+int __cdecl _cinit(
+	__in int
+	);
 
-//not properly implemented; i just dont have a time and passion to handle with : 
-//error LNK2001: unresolved external symbol "void __cdecl operator delete(void *)"
-void OnUnload(__in DRIVER_OBJECT* DriverObject)
+EXTERN_C
+void __cdecl doexit(
+	__in int /*code*/,
+	__in int /*quick*/,
+	__in int /*retcaller*/
+	);
+
+//---------------------------
+//-----   UNINSTALL   -------
+//---------------------------
+void OnUnload(
+	__in DRIVER_OBJECT* DriverObject
+	)
 {
-	if (gSC)
-	{
-		//gSC->~CSysCall();
-		free(gSC);
-	}
-}
+	UNREFERENCED_PARAMETER(DriverObject);
 
-NTSTATUS DriverEntry(__in DRIVER_OBJECT* driverObject, __in UNICODE_STRING* RegistryPath)
+	doexit(0, 0, 0);
+
+	DbgPrint("\n\n************** unloaded! <<<<<<<<<<<<<<<\n\n");
+} // end OnUnload
+
+//---------------------------
+//------   INSTALL   --------
+//---------------------------
+NTSTATUS DriverEntry(
+	__in DRIVER_OBJECT* driverObject,
+	__in UNICODE_STRING* RegistryPath
+	)
 {
-	DbgPrint("DriverEntry\n");
+	UNREFERENCED_PARAMETER(RegistryPath);
+
+	ExInitializeDriverRuntime(DrvRtPoolNxOptIn);
+
+	_cinit(0);
+
+	gSysCall.Install();
+
 	driverObject->DriverUnload = OnUnload;
 
-	gSC = (CSysCall*)malloc(sizeof(*gSC));
-	if (gSC)
-	{
-		::new(gSC) CSysCall();
-
-		gSC->Install();
-	}
-
-    return STATUS_SUCCESS;
+	return STATUS_SUCCESS;
 } // end DriverEntry()

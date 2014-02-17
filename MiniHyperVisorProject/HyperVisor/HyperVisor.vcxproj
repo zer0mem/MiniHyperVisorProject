@@ -34,7 +34,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>NotSet</CharacterSet>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>WindowsKernelModeDriver8.0</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
@@ -268,19 +268,19 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Common\base\instrinsics.cpp" />
-    <ClCompile Include="..\Common\base\libc.cpp" />
-    <ClCompile Include="..\Common\Kernel\MemoryMapping.cpp" />
+    <ClCompile Include="..\..\Common\base\instrinsics.cpp" />
+    <ClCompile Include="..\..\Common\base\libc.cpp" />
+    <ClCompile Include="..\..\Common\Kernel\MemoryMapping.cpp" />
     <ClCompile Include="src\HyperVisor.cpp" />
     <ClCompile Include="src\VirtualizedCpu.cpp" />
     <ClCompile Include="src\VMX.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Common\base\Common.h" />
-    <ClInclude Include="..\Common\base\instrinsics.h" />
-    <ClInclude Include="..\Common\base\SharedMacros.hpp" />
-    <ClInclude Include="..\Common\CPU\msr.h" />
-    <ClInclude Include="..\Common\Kernel\MemoryMapping.h" />
+    <ClInclude Include="..\..\Common\base\Common.h" />
+    <ClInclude Include="..\..\Common\base\instrinsics.h" />
+    <ClInclude Include="..\..\Common\base\SharedMacros.hpp" />
+    <ClInclude Include="..\..\Common\CPU\msr.h" />
+    <ClInclude Include="..\..\Common\Kernel\MemoryMapping.h" />
     <ClInclude Include="Common\base\HVCommon.h" />
     <ClInclude Include="Common\CPU\vmcs.h" />
     <ClInclude Include="src\HyperVisor.h" />
@@ -291,12 +291,12 @@
     <ResourceCompile Include="driver_template.rc" />
   </ItemGroup>
   <ItemGroup>
-    <MASM Include="..\Common\amd64\_instrinsics.asm" />
+    <MASM Include="..\..\Common\amd64\_instrinsics.asm" />
     <MASM Include="src\amd64\_hv.asm" />
     <MASM Include="src\amd64\_vmx.asm" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Common\amd64\common.inc" />
+    <None Include="..\..\Common\amd64\common.inc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

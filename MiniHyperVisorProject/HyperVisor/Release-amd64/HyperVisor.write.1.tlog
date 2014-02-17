@@ -4,3 +4,15 @@ C:\Users\phlavaty\Documents\GitHub\MiniHyperVisorProject\MiniHyperVisorProject\H
 C:\Users\phlavaty\Documents\GitHub\MiniHyperVisorProject\MiniHyperVisorProject\HyperVisor\Release-amd64\_hv.obj
 ^src\amd64\_vmx.asm
 C:\Users\phlavaty\Documents\GitHub\MiniHyperVisorProject\MiniHyperVisorProject\HyperVisor\Release-amd64\_vmx.obj
+^..\..\Common\amd64\_instrinsics.asm
+C:\Users\phlavaty\Documents\GitHub\tempox\MiniHyperVisorProject\HyperVisor\Release-amd64\_instrinsics.obj
+^src\amd64\_hv.asm
+C:\Users\phlavaty\Documents\GitHub\tempox\MiniHyperVisorProject\HyperVisor\Release-amd64\_hv.obj
+^src\amd64\_hv.asm
+C:\Users\phlavaty\Documents\GitHub\tempox\MiniHyperVisorProject\HyperVisor\Release-amd64\_hv.obj
+^src\amd64\_hv.asm
+C:\Users\phlavaty\Documents\GitHub\tempox\MiniHyperVisorProject\HyperVisor\Release-amd64\_hv.obj
+^src\amd64\_hv.asm
+C:\Users\phlavaty\Documents\GitHub\tempox\MiniHyperVisorProject\HyperVisor\Release-amd64\_hv.obj
+^src\amd64\_vmx.asm
+C:\Users\phlavaty\Documents\GitHub\tempox\MiniHyperVisorProject\HyperVisor\Release-amd64\_vmx.obj

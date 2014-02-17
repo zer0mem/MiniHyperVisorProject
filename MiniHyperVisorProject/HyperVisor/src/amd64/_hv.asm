@@ -1,6 +1,6 @@
 extrn HVExitTrampoline:proc
 
-include ..\Common\amd64\common.inc
+include ..\..\Common\amd64\common.inc
 
 .code
 

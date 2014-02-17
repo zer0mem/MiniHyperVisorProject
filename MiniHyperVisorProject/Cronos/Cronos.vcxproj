@@ -32,9 +32,9 @@
     <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>NotSet</CharacterSet>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>WindowsKernelModeDriver8.0</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
@@ -268,17 +268,17 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Common\base\instrinsics.cpp">
+    <ClCompile Include="..\..\Common\base\instrinsics.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\Common\base\libc.cpp" />
+    <ClCompile Include="..\..\Common\base\libc.cpp" />
     <ClCompile Include="src\Cronos.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Common\base\Common.h" />
-    <ClInclude Include="..\Common\base\instrinsics.h" />
-    <ClInclude Include="..\Common\CPU\msr.h" />
-    <ClInclude Include="..\Common\utils\ProcessorWalker.hpp" />
+    <ClInclude Include="..\..\Common\base\Common.h" />
+    <ClInclude Include="..\..\Common\base\instrinsics.h" />
+    <ClInclude Include="..\..\Common\CPU\msr.h" />
+    <ClInclude Include="..\..\Common\utils\ProcessorWalker.hpp" />
     <ClInclude Include="src\Cronos.h" />
   </ItemGroup>
   <ItemGroup>
@@ -290,12 +290,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <MASM Include="..\Common\amd64\_instrinsics.asm">
+    <MASM Include="..\..\Common\amd64\_instrinsics.asm">
       <FileType>Document</FileType>
     </MASM>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Common\amd64\common.inc">
+    <None Include="..\..\Common\amd64\common.inc">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>

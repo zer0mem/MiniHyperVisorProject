@@ -1,7 +1,7 @@
 extrn SysCallCallback:proc
 extrn RdmsrHook:proc
 
-include ..\Common\amd64\common.inc
+include ..\..\Common\amd64\common.inc
 
 .code
 

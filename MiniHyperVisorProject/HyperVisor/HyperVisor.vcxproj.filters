@@ -10,13 +10,13 @@
     <ClCompile Include="src\VMX.cpp">
       <Filter>src\VMX</Filter>
     </ClCompile>
-    <ClCompile Include="..\Common\base\libc.cpp">
+    <ClCompile Include="..\..\Common\base\libc.cpp">
       <Filter>Common\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\Common\Kernel\MemoryMapping.cpp">
+    <ClCompile Include="..\..\Common\Kernel\MemoryMapping.cpp">
       <Filter>Common\Kernel</Filter>
     </ClCompile>
-    <ClCompile Include="..\Common\base\instrinsics.cpp">
+    <ClCompile Include="..\..\Common\base\instrinsics.cpp">
       <Filter>Common\base</Filter>
     </ClCompile>
   </ItemGroup>
@@ -36,19 +36,19 @@
     <ClInclude Include="src\VMX.h">
       <Filter>src\VMX</Filter>
     </ClInclude>
-    <ClInclude Include="..\Common\base\Common.h">
+    <ClInclude Include="..\..\Common\base\Common.h">
       <Filter>Common\base</Filter>
     </ClInclude>
-    <ClInclude Include="..\Common\base\instrinsics.h">
+    <ClInclude Include="..\..\Common\base\instrinsics.h">
       <Filter>Common\base</Filter>
     </ClInclude>
-    <ClInclude Include="..\Common\CPU\msr.h">
+    <ClInclude Include="..\..\Common\CPU\msr.h">
       <Filter>Common\CPU</Filter>
     </ClInclude>
-    <ClInclude Include="..\Common\Kernel\MemoryMapping.h">
+    <ClInclude Include="..\..\Common\Kernel\MemoryMapping.h">
       <Filter>Common\Kernel</Filter>
     </ClInclude>
-    <ClInclude Include="..\Common\base\SharedMacros.hpp">
+    <ClInclude Include="..\..\Common\base\SharedMacros.hpp">
       <Filter>Common\base</Filter>
     </ClInclude>
   </ItemGroup>
@@ -103,12 +103,12 @@
     <MASM Include="src\amd64\_vmx.asm">
       <Filter>src\amd64</Filter>
     </MASM>
-    <MASM Include="..\Common\amd64\_instrinsics.asm">
+    <MASM Include="..\..\Common\amd64\_instrinsics.asm">
       <Filter>Common\amd64</Filter>
     </MASM>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Common\amd64\common.inc">
+    <None Include="..\..\Common\amd64\common.inc">
       <Filter>Common\amd64</Filter>
     </None>
   </ItemGroup>
