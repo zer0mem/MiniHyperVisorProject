@@ -8,39 +8,78 @@
 
 #include "../Common/base/HVCommon.h"
 
-EXTERN_C VOID get_guest_exit(__out ULONG_PTR* guestRip, __out ULONG_PTR* guestRsp);
-
-#define FEATURE_CONTROL_LOCKED			(1<<0)
-#define FEATURE_CONTROL_VMXON_ENABLED	(1<<2)
-
 class CVmx
 {
 public:
-	CVmx(__in KAFFINITY procId);
+	CVmx(
+		__in KAFFINITY procId,
+		__in ULONG_PTR expcetionMask = 0
+		);
 	~CVmx();
 
-	__checkReturn bool InstallHyperVisor(__in const VOID* hvEntryPoint, __in VOID* hvStack);
-	__checkReturn bool CpuActivated() const { return m_cpuActivated; };
+	__checkReturn 
+	bool InstallHyperVisor(
+		__in const void* hvEntryPoint, 
+		__in void* hvStack
+		);
+	
+	__checkReturn
+	VM_STATUS  VmcsToRing0();
 
-	static __checkReturn bool IsVirtualizationLocked();
-	static __checkReturn bool IsVirtualizationEnabled();
-	static void EnableVirtualization();
+	//force inline and public
+	__checkReturn 
+	bool CpuActivated() const
+	{
+		return m_cpuActivated;
+	}
+	
+//static
+	static
+	void EnableVirtualization();
+
+	static 
+	__checkReturn 
+	bool IsVirtualizationLocked();
+
+	static
+	__checkReturn
+	bool IsVirtualizationEnabled();
 
 protected:
-	__checkReturn bool VmcsInit();
+	__checkReturn 
+	VM_STATUS VmcsInit();
 
-	__checkReturn bool GetGuestState(__in KAFFINITY procId);
+	__checkReturn 
+	bool GetGuestState(
+		__in KAFFINITY procId
+		);
 
-	void GetSegmentDescriptor(__out SEGMENT_SELECTOR* segSel, __in ULONG_PTR selector);
-	void SetSegSelector(__in ULONG_PTR segSelector, __in ULONG_PTR segField);
+	void GetSegmentDescriptor(
+		__out SEGMENT_SELECTOR* segSel, 
+		__in ULONG_PTR selector
+		);
 
-	void SetCRx();
-	void SetControls();
-	void SetDT();
-	void SetSysCall();
+	__checkReturn
+	VM_STATUS SetSegSelector(
+		__in ULONG_PTR segSelector,
+		__in ULONG_PTR segField
+		);
+
+	__checkReturn
+	VM_STATUS SetCRx();
+
+	__checkReturn
+	VM_STATUS SetControls();
+
+	__checkReturn
+	VM_STATUS SetDT();
+
+	__checkReturn
+	VM_STATUS SetSysCall();
 
 protected:
 	bool m_cpuActivated;
+	ULONG_PTR m_expcetionMask;
 
 private:
 	bool m_preparedState;

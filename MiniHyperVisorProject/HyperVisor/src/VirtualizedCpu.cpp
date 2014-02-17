@@ -3,17 +3,23 @@
  * @author created by: Peter Hlavaty
  */
 
-#include "StdAfx.h"
+#include "drv_common.h"
 
 #include "VirtualizedCpu.h"
+#include "../../Common/base/SharedMacros.hpp"
 
-EXTERN_C ULONG_PTR HVExitTrampoline( __inout ULONG_PTR reg[0x10] );
-
-CVirtualizedCpu::CVirtualizedCpu( __in BYTE cpuCore, __in_opt const ULONG_PTR traps[MAX_CALLBACK], __in_opt const VOID* callback, __in_opt const VOID* param ) : m_vmx(PROCID(cpuCore)), m_cpuCore(cpuCore)
+CVirtualizedCpu::CVirtualizedCpu( 
+	__in BYTE cpuCore, 
+	__in_opt const VMTrap traps[MAX_CALLBACK], 
+	__in_opt ULONG_PTR exceptionMask,
+	__in_opt const VMCallback callback,
+	__in_opt const VOID* param 
+	) : m_vmx(PROCID(cpuCore), exceptionMask), 
+		m_cpuCore(cpuCore)
 {	
 	LARGE_INTEGER HighestAcceptableAddress;
 	HighestAcceptableAddress.HighPart = -1;
-	m_hvStack = (ULONG_PTR*)MmAllocateContiguousMemory(HYPERVISOR_STACK_PAGE, HighestAcceptableAddress);
+	m_hvStack = reinterpret_cast<ULONG_PTR*>(MmAllocateContiguousMemory(HYPERVISOR_STACK_PAGE, HighestAcceptableAddress));
 
 	if (NULL == m_hvStack)
 		return;
@@ -30,17 +36,19 @@ CVirtualizedCpu::~CVirtualizedCpu()
 	if (NULL != m_hvStack)
 	{
 		KeSetSystemAffinityThread(PROCID(m_cpuCore));
-		//((CHyperVisor*)(m_hvStack + 1))->~CHyperVisor();
+		((CHyperVisor*)(m_hvStack + 1))->~CHyperVisor();
 		MmFreeContiguousMemory(m_hvStack);
 	}
 }
 
-__checkReturn bool CVirtualizedCpu::VirtualizationON()
+__checkReturn 
+bool CVirtualizedCpu::VirtualizationON()
 {
-	return m_vmx.InstallHyperVisor(hv_exit, (VOID*)((ULONG_PTR)m_hvStack + HYPERVISOR_STACK_PAGE - 1));
+	return m_vmx.InstallHyperVisor(CHyperVisor::HvExitPoint(), reinterpret_cast<void*>(reinterpret_cast<ULONG_PTR>(m_hvStack) + HYPERVISOR_STACK_PAGE - 1));
 }
 
-__checkReturn bool CVirtualizedCpu::VirtualizationOFF()
+__checkReturn 
+bool CVirtualizedCpu::VirtualizationOFF()
 {
 	if (m_vmx.CpuActivated())
 	{
@@ -49,40 +57,63 @@ __checkReturn bool CVirtualizedCpu::VirtualizationOFF()
 	return false;
 }
 
-__checkReturn inline ULONG_PTR* CVirtualizedCpu::GetTopOfStack( __in const ULONG_PTR* stack )
+__forceinline
+__checkReturn 
+ULONG_PTR* CVirtualizedCpu::GetTopOfStack( 
+	__in const ULONG_PTR* stack
+	)
 {
 	while (kStackMark != *stack)
-		stack = (const ULONG_PTR*)ALIGN(stack - 1, MIN_PAGE_SIZE);
+		stack = reinterpret_cast<const ULONG_PTR*>(ALIGN(stack - 1, PAGE_SIZE));
 
-	return (ULONG_PTR*)stack;
+	return const_cast<ULONG_PTR*>(stack);
 }
 
-__checkReturn BYTE CVirtualizedCpu::GetCoreId( __in const ULONG_PTR* stack )
+__checkReturn 
+BYTE CVirtualizedCpu::GetCoreId( 
+	__in const ULONG_PTR* stack 
+	)
 {
-	ULONG_PTR ds;
-	vmread(VMX_VMCS16_GUEST_FIELD_DS, &ds);
-	xchgds(&ds);
+	VM_STATUS status;
+	ULONG_PTR ds = Instrinsics::VmRead(VMX_VMCS16_GUEST_FIELD_DS, &status);
 
-	ULONG_PTR* stack_top = CVirtualizedCpu::GetTopOfStack(stack);
-	CHyperVisor* hypervisor = (CHyperVisor*)(stack_top + 2);
-	BYTE cored_id = hypervisor->GetCoredId();
+	ASSERT(VM_OK(status));
 
-	writeds(ds);
+	if (VM_OK(status))
+	{
+		xchgds(&ds);
 
-	return cored_id;
+		ULONG_PTR* stack_top = CVirtualizedCpu::GetTopOfStack(stack);
+		CHyperVisor* hypervisor = reinterpret_cast<CHyperVisor*>(stack_top + 2);
+		BYTE cored_id = hypervisor->GetCoredId();
+
+		writeds(ds);
+		return cored_id;
+	}
+	return 0;
 }
 
-EXTERN_C ULONG_PTR HVExitTrampoline( __inout ULONG_PTR reg[0x10] )
-{	
-	ULONG_PTR ds;
-	vmread(VMX_VMCS16_GUEST_FIELD_DS, &ds);
-	xchgds(&ds);
+EXTERN_C 
+VMTrap HVExitTrampoline( 
+	__inout ULONG_PTR reg[REG_COUNT]
+	)
+{
+	VM_STATUS status;
+	ULONG_PTR ds = Instrinsics::VmRead(VMX_VMCS16_GUEST_FIELD_DS, &status);
 
-	ULONG_PTR* stack_top = CVirtualizedCpu::GetTopOfStack(reg);
-	CHyperVisor* hypervisor = (CHyperVisor*)(stack_top + 2);
-	ULONG_PTR handler = hypervisor->HVEntryPoint(reg, (stack_top + 1));
+	ASSERT(VM_OK(status));
 
-	writeds(ds);
+	if (VM_OK(status))
+	{
+		xchgds(&ds);
 
-	return handler;
+		ULONG_PTR* stack_top = CVirtualizedCpu::GetTopOfStack(reg);
+		CHyperVisor* hypervisor = reinterpret_cast<CHyperVisor*>(stack_top + 2);
+		VMTrap handler = hypervisor->HVEntryPoint(reg, (stack_top + 1));
+
+		writeds(ds);
+
+		return handler;
+	}
+	return CHyperVisor::DummyHandler();
 }

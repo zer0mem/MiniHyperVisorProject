@@ -3,7 +3,7 @@
 * @author created by: Peter Hlavaty
 */
 
-#include "StdAfx.h"
+#include "drv_common.h"
 
 #include "CSysCall.h"
 #include "../../Common/Kernel/IRQL.hpp"
@@ -15,7 +15,7 @@ EXTERN_C void sysenter();
 
 EXTERN_C void rdmsr_hook();
 
-CSysCall::CSysCall()
+CSysCall::CSysCall() : CCRonos()
 {
 	RtlZeroMemory(m_syscalls, sizeof(m_syscalls));
 }
@@ -40,13 +40,12 @@ void CSysCall::Install()
 {
 	if (CCRonos::EnableVirtualization())
 	{
-		CVirtualizedCpu* v_cpu = m_vCpu;
-		for (BYTE i = 0; i < m_vCpuCount; i++, v_cpu++)
+		for (BYTE i = 0; i < m_vCpu.GetCount(); i++)
 		{
 
 #if HYPERVISOR
 
-			if (v_cpu->VirtualizationON())
+			if (m_vCpu[i].VirtualizationON())
 
 #endif
 
@@ -71,7 +70,7 @@ __checkReturn bool CSysCall::SetVirtualizationCallbacks()
 	if (!CCRonos::SetVirtualizationCallbacks())
 		return false;
 
-	m_traps[VMX_EXIT_RDMSR] = (ULONG_PTR)HookProtectionMSR;
+	m_traps[VMX_EXIT_RDMSR] = HookProtectionMSR;
 
 	return true;//RegisterCallback(m_callbacks, );
 }
@@ -133,20 +132,29 @@ void CSysCall::HookProtectionMSR( __inout ULONG_PTR reg[0x10] )
 	{
 		syscall = (ULONG_PTR)CSysCall::GetSysCall(CVirtualizedCpu::GetCoreId(reg));
 
-		ULONG_PTR ins_len;
-		vmread(VMX_VMCS32_RO_EXIT_INSTR_LENGTH, &ins_len);
-		vmread(VMX_VMCS64_GUEST_RIP, &reg[RCX]);//original 'ret'-addr
-		m_sRdmsrRips.Push(reg[RCX] - ins_len);
-
-		vmwrite(VMX_VMCS64_GUEST_RIP, rdmsr_hook);//rdmsr_hook is trampolie to RdmsrHook
+		VM_STATUS status;
+		ULONG_PTR ins_len = Instrinsics::VmRead(VMX_VMCS32_RO_EXIT_INSTR_LENGTH, &status);
+		if (VM_OK(status))
+		{
+			ULONG_PTR eip = Instrinsics::VmRead(VMX_VMCS64_GUEST_RIP, &status);
+			if (VM_OK(status))
+			{
+				status = Instrinsics::VmWrite(VMX_VMCS64_GUEST_RIP, reinterpret_cast<ULONG_PTR>(rdmsr_hook));//rdmsr_hook is trampolie to RdmsrHook
+				if (VM_OK(status))
+				{
+					reg[RCX] = eip;
+					m_sRdmsrRips.Push(reg[RCX] - ins_len);
+				}
+			}
+		}
 	}
 	else
 	{
-		syscall = rdmsr((ULONG)reg[RCX]);
+		syscall = rdmsr(static_cast<ULONG>(reg[RCX]));
 	}
 
-	reg[RAX] = (ULONG)(syscall);
-	reg[RDX] = (ULONG)(syscall >> (sizeof(ULONG) << 3));
+	reg[RAX] = static_cast<ULONG>(syscall);
+	reg[RDX] = static_cast<ULONG>(syscall >> (sizeof(ULONG) << 3));
 }
 
 //crapppy container

@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "drv_common.h"
 
 #include "./src/CSysCall.h"
 

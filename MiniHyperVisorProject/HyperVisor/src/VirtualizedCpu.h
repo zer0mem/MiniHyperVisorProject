@@ -14,19 +14,37 @@
 class CVirtualizedCpu
 {
 public:
-	CVirtualizedCpu(__in BYTE cpuCore, __in_opt const ULONG_PTR traps[MAX_CALLBACK], __in_opt const VOID* callback = NULL, __in_opt const VOID* param = NULL);
+	CVirtualizedCpu(
+		__in BYTE cpuCore, 
+		__in_opt const VMTrap traps[MAX_CALLBACK], 
+		__in_opt ULONG_PTR exceptionMask = 0,
+		__in_opt const VMCallback callback = NULL, 
+		__in_opt const VOID* param = NULL
+		);
+
 	~CVirtualizedCpu();
 
-	__checkReturn bool VirtualizationON();
-	__checkReturn bool VirtualizationOFF();
+	__checkReturn 
+	bool VirtualizationON();
 
-	__checkReturn static BYTE GetCoreId(__in const ULONG_PTR* stack);
-	__checkReturn static inline ULONG_PTR* GetTopOfStack(__in const ULONG_PTR* stack);
+	__checkReturn
+	bool VirtualizationOFF();
+
+	__checkReturn
+	static BYTE GetCoreId(
+		__in const ULONG_PTR* stack
+		);
+
+	__checkReturn 
+	static inline ULONG_PTR* GetTopOfStack(
+		__in const ULONG_PTR* stack
+		);
 
 protected:
 	BYTE m_cpuCore;
-	CVmx m_vmx;
 	ULONG_PTR* m_hvStack;
+
+	CVmx m_vmx;
 };
 
 #endif //__VIRTUALIZEDCPU_H__

@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="StdAfx.cpp" />
     <ClCompile Include="src\HyperVisor.cpp">
       <Filter>src\HyperVisor</Filter>
     </ClCompile>
@@ -14,13 +13,14 @@
     <ClCompile Include="..\Common\base\libc.cpp">
       <Filter>Common\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\Common\Kernel\Mdl.cpp">
+    <ClCompile Include="..\Common\Kernel\MemoryMapping.cpp">
       <Filter>Common\Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\base\instrinsics.cpp">
+      <Filter>Common\base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="drv_common.h" />
-    <ClInclude Include="StdAfx.h" />
     <ClInclude Include="Common\base\HVCommon.h">
       <Filter>src\Common\base</Filter>
     </ClInclude>
@@ -42,14 +42,14 @@
     <ClInclude Include="..\Common\base\instrinsics.h">
       <Filter>Common\base</Filter>
     </ClInclude>
-    <ClInclude Include="..\Common\Kernel\IRQL.hpp">
-      <Filter>Common\Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Common\Kernel\Mdl.h">
-      <Filter>Common\Kernel</Filter>
-    </ClInclude>
     <ClInclude Include="..\Common\CPU\msr.h">
       <Filter>Common\CPU</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Kernel\MemoryMapping.h">
+      <Filter>Common\Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\base\SharedMacros.hpp">
+      <Filter>Common\base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

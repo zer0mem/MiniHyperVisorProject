@@ -7,43 +7,58 @@
 #define __HYPERVISOR_H__
 
 #include "../Common/base/HVCommon.h"
+#include "../../Common/base/Shared.h"
+
+typedef void (*VMCallback)(
+	__inout ULONG_PTR reg[REG_COUNT], 
+	__in const void* param
+	);
+
+typedef void (*VMTrap)(
+	__inout ULONG_PTR reg[REG_COUNT]
+	);
 
 class CHyperVisor
 {
+#define INVD		reinterpret_cast<VMTrap>(__hv_invd)
+#define RDMSR		reinterpret_cast<VMTrap>(__hv_rdmsr)
+#define WRMSR		reinterpret_cast<VMTrap>(__hv_wrmsr)
+#define CPUID		reinterpret_cast<VMTrap>(__hv_cpuid)
+#define CRX			reinterpret_cast<VMTrap>(__hv_crx)
+#define VMX			reinterpret_cast<VMTrap>(__hv_dummy)
+#define DUMMY		reinterpret_cast<VMTrap>(__hv_dummy)
+#define VMCALL		reinterpret_cast<VMTrap>(__hv_vmcall)
+#define RDTSC		reinterpret_cast<VMTrap>(__hv_rdtsc)
+
 public:
-	CHyperVisor(__in BYTE coredId, __in_opt const ULONG_PTR traps[MAX_CALLBACK], __in_opt const VOID* callback = NULL);
+	CHyperVisor(
+		__in BYTE coredId,
+		__in_opt const VMTrap traps[MAX_CALLBACK], 
+		__in_opt const VMCallback callback = NULL
+		);
 	~CHyperVisor();
 
-	ULONG_PTR HVEntryPoint(__inout ULONG_PTR reg[0x10], __in VOID* param);
+	VMTrap HVEntryPoint(
+		__inout ULONG_PTR reg[REG_COUNT], 
+		__in void* param
+		);
 	BYTE GetCoredId();
 
+	static
+	VMTrap DummyHandler();
+
+	static 
+	const void* HvExitPoint();
+
 protected:
-	void HandleCrxAccess(__inout ULONG_PTR reg[0x10]);
+	void HandleCrxAccess(
+		__inout ULONG_PTR reg[REG_COUNT]
+	);
 
 protected:
 	BYTE m_coreId;
-	const VOID* m_callback;
-	ULONG_PTR m_hvCallbacks[MAX_CALLBACK];
+	VMCallback m_callback;
+	VMTrap m_hvCallbacks[MAX_CALLBACK];
 };
-
-EXTERN_C VOID  hv_exit();
-
-EXTERN_C void __hv_invd();
-EXTERN_C void __hv_rdmsr();
-EXTERN_C void __hv_wrmsr();
-EXTERN_C void __hv_cpuid();
-EXTERN_C void __hv_crx();
-EXTERN_C void __hv_dummy();
-EXTERN_C void __hv_dummy();
-EXTERN_C void __hv_vmcall();
-
-#define INVD		((ULONG_PTR)__hv_invd)
-#define RDMSR		((ULONG_PTR)__hv_rdmsr)
-#define WRMSR		((ULONG_PTR)__hv_wrmsr)
-#define CPUID		((ULONG_PTR)__hv_cpuid)
-#define CRX			((ULONG_PTR)__hv_crx)
-#define VMX			((ULONG_PTR)__hv_dummy)
-#define DUMMY		((ULONG_PTR)__hv_dummy)
-#define VMCALL		((ULONG_PTR)__hv_vmcall)
 
 #endif //__HYPERVISOR_H__

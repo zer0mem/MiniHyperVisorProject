@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="StdAfx.cpp" />
     <ClCompile Include="..\Common\base\libc.cpp">
       <Filter>Common\base</Filter>
     </ClCompile>
     <ClCompile Include="src\Cronos.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\Common\base\instrinsics.cpp">
+      <Filter>Common\base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="drv_common.h" />
-    <ClInclude Include="StdAfx.h" />
     <ClInclude Include="..\Common\base\Common.h">
       <Filter>Common\base</Filter>
     </ClInclude>

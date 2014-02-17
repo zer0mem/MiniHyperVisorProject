@@ -34,11 +34,19 @@ __hv_vmcall proc
 	jmp _resume
 __hv_vmcall endp
 
+__hv_rdtsc proc
+	;rdtsc
+	push rcx
+	mov rcx, 010h
+	rdmsr;IA32_TIME_STAMP_COUNTER
+	pop rcx
+	jmp _resume
+__hv_rdtsc endp
+
 @dummy_end:
 
 hv_exit proc
 	pushptr
-	pushfq
 	pushaq
 	
 	mov rcx, rsp
@@ -57,9 +65,8 @@ hv_exit proc
 
 _dummy_callback:
 	pop rcx
-	mov [rsp + 011h * sizeof(qword)], rax ;ret -> dummy_callback handler
+	mov [rsp + 010h * sizeof(qword)], rax ;ret -> dummy_callback handler
 	popaq
-	popfq
 	ret  ; popptr + jmp to dummy_callback handler
 
 _user_specified_callback:
@@ -67,8 +74,7 @@ _user_specified_callback:
 	call rax
 	popptr
 
-	popaq  ; cause pop all (valatile && non..) regs, updated from callbacks (&reg)
-	popfq
+	popaq  ; cause pop all (valatile && non..) regs, updated from callbacks (&reg)	
 	popptr
 
 	jmp _resume

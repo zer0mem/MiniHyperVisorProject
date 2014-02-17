@@ -40,7 +40,7 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>NotSet</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>WindowsKernelModeDriver8.0</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -81,7 +81,7 @@
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreImportLibrary>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)$(Configuration)-amd64\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutiontDir)sys-amd64\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\$(Configuration)-amd64\</IntDir>
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</IgnoreImportLibrary>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
@@ -91,6 +91,12 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetExt>.sys</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <TargetExt>.sys</TargetExt>
+    <EnableManagedIncrementalBuild>true</EnableManagedIncrementalBuild>
+    <LibraryPath>$(VCInstallDir)lib\amd64;$(VCInstallDir)atlmfc\lib\amd64;$(WindowsSDK_LibraryPath_x64);</LibraryPath>
+    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -223,8 +229,8 @@
     </Midl>
     <ClCompile>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>C:\Program Files (x86)\Windows Kits\8.0\Include\shared;C:\Program Files (x86)\Windows Kits\8.0\Include\km;C:\Program Files (x86)\Windows Kits\8.0\Include\um;C:\Program Files (x86)\Windows Kits\8.0\Include\km\crt;%(AdditionalIncludeDirectories);$(ProjectDir);$(BASEDIR2K3)\inc\ddk\wnet;$(BASEDIR2K3)\inc\ifs\wnet;$(BASEDIR2K3)\inc\wnet;$(BASEDIR2K3)\inc\crt</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN64; _WIN64; _M_AMD64; _AMD_64_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir);C:\Program Files (x86)\Windows Kits\8.0\Include\shared;C:\Program Files (x86)\Windows Kits\8.0\Include\km;C:\Program Files (x86)\Windows Kits\8.0\Include\um;C:\Program Files (x86)\Windows Kits\8.0\Include\km\crt;%(AdditionalIncludeDirectories);$(ProjectDir);$(BASEDIR2K3)\inc\ddk\wnet;$(BASEDIR2K3)\inc\ifs\wnet;$(BASEDIR2K3)\inc\wnet;$(BASEDIR2K3)\inc\crt</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>HYPERVISOR;WIN64; _WIN64; _M_AMD64; _AMD_64_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <StringPooling>true</StringPooling>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
@@ -233,20 +239,22 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
-      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CallingConvention>StdCall</CallingConvention>
       <OmitDefaultLibName>true</OmitDefaultLibName>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <PrecompiledHeaderFile>drv_common.h</PrecompiledHeaderFile>
     </ClCompile>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Link>
       <AdditionalOptions>/safeseh:no %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>ntoskrnl.lib;hal.lib;libcmtd.lib;C:\Program Files (x86)\Windows Kits\8.0\Lib\win7\km\x64\procgrp.lib</AdditionalDependencies>
+      <AdditionalDependencies>ntoskrnl.lib;hal.lib;libcmtd.lib;procgrp.lib;</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ProjectName).sys</OutputFile>
-      <AdditionalLibraryDirectories>$(BASEDIR2K3)\lib\wnet\amd64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Program Files (x86)\Windows Kits\8.0\Lib\win7\km\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Native</SubSystem>
@@ -256,25 +264,25 @@
       <EntryPointSymbol>DriverEntry</EntryPointSymbol>
       <TargetMachine>MachineX64</TargetMachine>
       <AllowIsolation>true</AllowIsolation>
+      <TreatLinkerWarningAsErrors>false</TreatLinkerWarningAsErrors>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Common\base\instrinsics.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\Common\base\libc.cpp" />
-    <ClCompile Include="..\Common\Kernel\Mdl.cpp" />
     <ClCompile Include="src\CSysCall.cpp" />
     <ClCompile Include="DriverEntry.cpp" />
-    <ClCompile Include="StdAfx.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Common\base\Common.h" />
     <ClInclude Include="..\Common\base\instrinsics.h" />
     <ClInclude Include="..\Common\CPU\msr.h" />
     <ClInclude Include="..\Common\Kernel\IRQL.hpp" />
-    <ClInclude Include="..\Common\Kernel\Mdl.h" />
     <ClInclude Include="Common\Stack.hpp" />
     <ClInclude Include="drv_common.h" />
     <ClInclude Include="src\CSysCall.h" />
-    <ClInclude Include="StdAfx.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="driver_template.rc" />
@@ -293,9 +301,19 @@
   <ItemGroup>
     <ProjectReference Include="..\Cronos\Cronos.vcxproj">
       <Project>{b6559a43-52b1-42f0-a76e-3c20430b4d33}</Project>
+      <Private>false</Private>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
     <ProjectReference Include="..\HyperVisor\HyperVisor.vcxproj">
       <Project>{ee8aee65-453e-44c7-8e66-a92bef8efc07}</Project>
+      <Private>false</Private>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

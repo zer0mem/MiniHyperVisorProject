@@ -37,10 +37,10 @@
     <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>NotSet</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>WindowsKernelModeDriver8.0</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
@@ -81,7 +81,7 @@
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreImportLibrary>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)$(Configuration)-amd64\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)lib-amd64\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\$(Configuration)-amd64\</IntDir>
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</IgnoreImportLibrary>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
@@ -91,6 +91,10 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <EnableManagedIncrementalBuild>true</EnableManagedIncrementalBuild>
+    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -223,7 +227,7 @@
     </Midl>
     <ClCompile>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>C:\Program Files (x86)\Windows Kits\8.0\Include\shared;C:\Program Files (x86)\Windows Kits\8.0\Include\km;C:\Program Files (x86)\Windows Kits\8.0\Include\um;C:\Program Files (x86)\Windows Kits\8.0\Include\km\crt;%(AdditionalIncludeDirectories);$(ProjectDir);$(BASEDIR2K3)\inc\ddk\wnet;$(BASEDIR2K3)\inc\ifs\wnet;$(BASEDIR2K3)\inc\wnet;$(BASEDIR2K3)\inc\crt</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);C:\Program Files (x86)\Windows Kits\8.0\Include\shared;C:\Program Files (x86)\Windows Kits\8.0\Include\km;C:\Program Files (x86)\Windows Kits\8.0\Include\um;C:\Program Files (x86)\Windows Kits\8.0\Include\km\crt;%(AdditionalIncludeDirectories);$(ProjectDir);$(BASEDIR2K3)\inc\ddk\wnet;$(BASEDIR2K3)\inc\ifs\wnet;$(BASEDIR2K3)\inc\wnet;$(BASEDIR2K3)\inc\crt</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN64; _WIN64; _M_AMD64; _AMD_64_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <StringPooling>true</StringPooling>
@@ -233,11 +237,13 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
-      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CallingConvention>StdCall</CallingConvention>
       <OmitDefaultLibName>true</OmitDefaultLibName>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <PrecompiledHeaderFile>drv_common.h</PrecompiledHeaderFile>
     </ClCompile>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
@@ -257,28 +263,29 @@
       <TargetMachine>MachineX64</TargetMachine>
       <AllowIsolation>true</AllowIsolation>
     </Link>
+    <Lib>
+      <TreatLibWarningAsErrors>false</TreatLibWarningAsErrors>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Common\base\instrinsics.cpp" />
     <ClCompile Include="..\Common\base\libc.cpp" />
-    <ClCompile Include="..\Common\Kernel\Mdl.cpp" />
+    <ClCompile Include="..\Common\Kernel\MemoryMapping.cpp" />
     <ClCompile Include="src\HyperVisor.cpp" />
     <ClCompile Include="src\VirtualizedCpu.cpp" />
     <ClCompile Include="src\VMX.cpp" />
-    <ClCompile Include="StdAfx.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Common\base\Common.h" />
     <ClInclude Include="..\Common\base\instrinsics.h" />
+    <ClInclude Include="..\Common\base\SharedMacros.hpp" />
     <ClInclude Include="..\Common\CPU\msr.h" />
-    <ClInclude Include="..\Common\Kernel\IRQL.hpp" />
-    <ClInclude Include="..\Common\Kernel\Mdl.h" />
+    <ClInclude Include="..\Common\Kernel\MemoryMapping.h" />
     <ClInclude Include="Common\base\HVCommon.h" />
     <ClInclude Include="Common\CPU\vmcs.h" />
-    <ClInclude Include="drv_common.h" />
     <ClInclude Include="src\HyperVisor.h" />
     <ClInclude Include="src\VirtualizedCpu.h" />
     <ClInclude Include="src\VMX.h" />
-    <ClInclude Include="StdAfx.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="driver_template.rc" />
