@@ -1,0 +1,3 @@
+[submodule "MiniHyperVisorProject/Common"]
+	path = MiniHyperVisorProject/Common
+	url = https://github.com/zer0mem/Common.git
