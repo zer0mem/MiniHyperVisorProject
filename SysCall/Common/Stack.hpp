@@ -1,25 +1,27 @@
-/**
- * @file Stack.hpp
- * @author created by: Peter Hlavaty
- */
+#pragma once
 
-#ifndef __STACK_H__
-#define __STACK_H__
-
-//missing locks ;)
+//TODO : exchange with boost alternative!!
 class CStack
 {
 public:
-	CStack() : m_top(0), m_bottom(0), m_alert(false)
+	CStack() : 
+		m_top(0), 
+		m_bottom(0), 
+		m_alert(false)
 	{
 	}
 
-	__checkReturn bool IsEmpty()
+	__checkReturn 
+	bool 
+	IsEmpty()
 	{
 		return (m_bottom == m_top);
 	}
 
-	ULONG_PTR Push(__in ULONG_PTR val)
+	ULONG_PTR 
+	Push(
+		__in ULONG_PTR val
+		)
 	{
 		if (m_bottom <= m_top)
 		{
@@ -35,7 +37,8 @@ public:
 		return val;
 	}
 
-	ULONG_PTR Pop()
+	ULONG_PTR 
+	Pop()
 	{
 		size_t ind = InterlockedExchangeAdd64((LONG64*)&m_bottom, 1);
 		return m_readMsrAttempts[ind];
@@ -46,5 +49,3 @@ protected:
 	size_t m_bottom;
 	ULONG_PTR m_readMsrAttempts[0x100];
 };
-
-#endif //__STACK_H__

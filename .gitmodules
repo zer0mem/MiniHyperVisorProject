@@ -1,6 +1,9 @@
 [submodule "Common"]
 	path = Common
-	url = https://github.com/zer0mem/Common.git
+	url = https://github.com/zer0mem/miniCommon.git
 [submodule "HyperVisor"]
 	path = HyperVisor
 	url = https://github.com/zer0mem/HyperVisor.git
+[submodule "libc"]
+	path = libc
+	url = https://github.com/zer0mem/libc.git

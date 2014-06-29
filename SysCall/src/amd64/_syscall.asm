@@ -1,7 +1,17 @@
+.data
+
+include common.inc
+
 extrn SysCallCallback:proc
 extrn RdmsrHook:proc
 
-include ..\..\Common\amd64\common.inc
+MAGIC							equ		04C495052h
+IA32_SYSENTER_EIP				equ		0176h
+IA64_SYSENTER_EIP				equ		0C0000082h
+Ring3RSP						equ		010h
+Ring0RSP						equ		01a8h
+VMX_VMCS_HOST_SYSENTER_EIP		equ		06C12h
+VMX_VMCS64_GUEST_SYSENTER_EIP 	equ		06826h
 
 .code
 

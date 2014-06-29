@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Driver Files">
+      <UniqueIdentifier>{8E41214B-6785-4CFE-B992-037D68949A14}</UniqueIdentifier>
+      <Extensions>inf;inv;inx;mof;mc;</Extensions>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{9d798069-d995-44b5-8316-a0af7e3a2df8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\base">
+      <UniqueIdentifier>{c50e1ee6-e756-4886-a785-82d6034aceb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\kernel">
+      <UniqueIdentifier>{6bc15a58-bf69-48ab-9269-086736309d9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\amd64">
+      <UniqueIdentifier>{070bb0fb-f65f-479c-815a-4cd9e1ddc461}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\adm64">
+      <UniqueIdentifier>{c1bc71a9-6e82-4d6c-8e57-fa2bef671d41}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Inf Include="SysCall.inf">
+      <Filter>Driver Files</Filter>
+    </Inf>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\DriverEntry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\kernel\libc.cpp">
+      <Filter>Common\kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CSysCall.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Common\kernel\KernelModule.hpp">
+      <Filter>Common\kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\base\Module.hpp">
+      <Filter>Common\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\base\ObjDisposer.hpp">
+      <Filter>Common\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\base\Singleton.hpp">
+      <Filter>Common\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\base\DynamicClass.h">
+      <Filter>Common\base</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Stack.hpp" />
+    <ClInclude Include="src\CSysCall.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\libc\libc.vcxproj.filters" />
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="..\Common\amd64\_instrinsics.asm">
+      <Filter>Common\amd64</Filter>
+    </MASM>
+    <MASM Include="src\amd64\_syscall.asm">
+      <Filter>Source Files\adm64</Filter>
+    </MASM>
+  </ItemGroup>
+</Project>

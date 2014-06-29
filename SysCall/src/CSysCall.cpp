@@ -1,21 +1,19 @@
-/**
-* @file CSysCall.cpp
-* @author created by: Peter Hlavaty
-*/
-
-#include "drv_common.h"
-
 #include "CSysCall.h"
-#include "../../Common/Kernel/IRQL.hpp"
-#include "../../Common/CPU/msr.h"
+#include <HyperVisor/Common/base/instrinsics.h>
+#include <Common/cpu/msr.h>
 
 void* CSysCall::m_syscalls[MAX_PROCID];
 
-EXTERN_C void sysenter();
+extern "C"
+void 
+sysenter();
 
-EXTERN_C void rdmsr_hook();
+extern "C"
+void 
+rdmsr_hook();
 
-CSysCall::CSysCall() : CCRonos()
+CSysCall::CSysCall() : 
+	CCRonos()
 {
 	RtlZeroMemory(m_syscalls, sizeof(m_syscalls));
 }
@@ -24,19 +22,18 @@ CSysCall::~CSysCall()
 {
 	BYTE core_id = 0;
 	CProcessorWalker cpu_w;
-	while (cpu_w.NextCore(&core_id, core_id))
+	while (cpu_w.NextCore(&core_id))
 	{
 		KeSetSystemAffinityThread(PROCID(core_id));
 
 		HookSyscallMSR(m_syscalls[core_id]);
 
 		DbgPrint("Unhooked. procid [%x] <=> syscall addr [%p]\n", core_id, m_syscalls[core_id]);
-
-		core_id++;//follow with next core
 	}
 }
 
-void CSysCall::Install()
+void 
+CSysCall::Install()
 {
 	if (CCRonos::EnableVirtualization())
 	{
@@ -63,7 +60,9 @@ void CSysCall::Install()
 
 }
 
-__checkReturn bool CSysCall::SetVirtualizationCallbacks()
+__checkReturn
+bool 
+CSysCall::SetVirtualizationCallbacks()
 {
 	DbgPrint("CSysCall::SetVirtualizationCallbacks\n");
 
@@ -76,7 +75,10 @@ __checkReturn bool CSysCall::SetVirtualizationCallbacks()
 }
 
 
-void CSysCall::PerCoreAction( __in BYTE coreId )
+void 
+CSysCall::PerCoreAction( 
+	__in BYTE coreId 
+	)
 {
 	CCRonos::PerCoreAction(coreId);
 
@@ -91,7 +93,10 @@ void CSysCall::PerCoreAction( __in BYTE coreId )
 
 //static 
 
-void* CSysCall::GetSysCall( __in BYTE coreId )
+void* 
+CSysCall::GetSysCall( 
+	__in BYTE coreId 
+	)
 {
 	if (coreId > MAX_PROCID)
 		return NULL;
@@ -99,17 +104,25 @@ void* CSysCall::GetSysCall( __in BYTE coreId )
 	return CSysCall::m_syscalls[coreId];
 }
 
-void CSysCall::HookSyscallMSR(__in const void* hook)
+void
+CSysCall::HookSyscallMSR(
+	__in const void* hook
+	)
 {
-	CDisableInterrupts idis;
+	cli();
 	wrmsr(IA64_SYSENTER_EIP, (ULONG_PTR)hook);
+	sti();
 }
 
 //hook
 
 LONG64 m_counter = 0;
 
-EXTERN_C void* SysCallCallback( __inout ULONG_PTR* reg )
+extern "C" 
+void* 
+SysCallCallback( 
+	__inout ULONG_PTR* reg 
+	)
 {
 	InterlockedIncrement64(&m_counter);
 	if (0 == (m_counter % (0x100000 / 4)))
@@ -125,14 +138,17 @@ EXTERN_C void* SysCallCallback( __inout ULONG_PTR* reg )
 //****
 //HV callback -> hook protection!
 
-void CSysCall::HookProtectionMSR( __inout ULONG_PTR reg[0x10] )
+void 
+CSysCall::HookProtectionMSR( 
+	__inout ULONG_PTR reg[0x10] 
+	)
 {
 	ULONG_PTR syscall;
 	if (IA64_SYSENTER_EIP == reg[RCX])
 	{
 		syscall = (ULONG_PTR)CSysCall::GetSysCall(CVirtualizedCpu::GetCoreId(reg));
 
-		VM_STATUS status;
+		EVmErrors status;
 		ULONG_PTR ins_len = Instrinsics::VmRead(VMX_VMCS32_RO_EXIT_INSTR_LENGTH, &status);
 		if (VM_OK(status))
 		{
@@ -158,19 +174,25 @@ void CSysCall::HookProtectionMSR( __inout ULONG_PTR reg[0x10] )
 }
 
 //crapppy container
-CStack CSysCall::m_sRdmsrRips;
+CStack
+CSysCall::m_sRdmsrRips;
 
-CStack& CSysCall::GetRdmsrStack()
+CStack& 
+CSysCall::GetRdmsrStack()
 {
 	return m_sRdmsrRips;
 }
 
 //little bit another kind of hook -virtualization-based- :P
-EXTERN_C void* RdmsrHook( __inout ULONG_PTR* reg )
+extern "C" 
+void* 
+RdmsrHook( 
+	__inout ULONG_PTR* reg 
+	)
 {
 	void* ret = (void*)reg[RCX];
 	DbgPrint("\nRdmsrHook %p [pethread : %p]\n", ret, PsGetCurrentThread());
 	reg[RCX] = IA64_SYSENTER_EIP;
-	KeBreak();
+	DbgBreakPoint();
 	return ret;
 }
