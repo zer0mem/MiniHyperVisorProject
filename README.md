@@ -20,4 +20,4 @@ c++ kernel project in vs12, demo for capstone usage, available to use also boost
 
 **more about project**
 
-    http://www.zer0mem.sk/?p=302
+- http://www.zer0mem.sk/?p=302
