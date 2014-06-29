@@ -1,17 +1,23 @@
 MiniHyperVisorProject
-=====================
+=============
 
-more at blog : http://www.zer0mem.sk/?p=302
+c++ kernel project in vs12, demo for capstone usage, available to use also boost!
 
-IntelVT-X nice feature -> tool
 
-how to 'install' : 
-"
-mkdir zer0mem-github.com
-cd zer0mem-github.com
-git xclone https://github.com/zer0mem/MiniHyperVisorProject.git .
-"
--> Release (x64), is working configuration!
--> if does not compile, check c++ AdditionalIncludeDirectories , and linker AnditionalLibrabryDirectories; per project (Cronos, HyperVisor, SysCall)
+**get & install**
 
-feel free to edit sources and research on your own! :)
+    git clone --recursive https://github.com/zer0mem/MiniHyperVisorProject.git
+    
+**configuration**
+    Win7 release, x64, visual studio 2013 (c++11)
+
+**content**
+
+- HyperVisor (src & proj for .lib)
+- libc (src & proj for .lib)
+- boost ( https://github.com/boostorg/boost )
+- syscall project
+
+**more about project**
+
+    http://www.zer0mem.sk/?p=302

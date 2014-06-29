@@ -7,3 +7,6 @@
 [submodule "libc"]
 	path = libc
 	url = https://github.com/zer0mem/libc.git
+[submodule "boost"]
+	path = boost
+	url = https://github.com/boostorg/boost
