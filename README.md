@@ -9,6 +9,7 @@ c++ kernel project in vs12, demo for capstone usage, available to use also boost
     git clone --recursive https://github.com/zer0mem/MiniHyperVisorProject.git
     
 **configuration**
+
     Win7 release, x64, visual studio 2013 (c++11)
 
 **content**
