@@ -29,6 +29,7 @@ CSysCall::~CSysCall()
 		HookSyscallMSR(m_syscalls[core_id]);
 
 		DbgPrint("Unhooked. procid [%x] <=> syscall addr [%p]\n", core_id, m_syscalls[core_id]);
+		core_id++;
 	}
 }
 
